@@ -1,0 +1,54 @@
+CREATE TABLE trigger_test (
+    message VARCHAR(100)
+);
+
+-- triggers need to be done in command line
+-- just keeping them here for visual aid MOLLY!!! >;P
+
+DELIMITER $$ -- changes the delimiter ; to $$ so the trigger works correctly
+CREATE
+     TRIGGER my_trigger BEFORE INSERT -- before any item gets inserted on the employee table
+     ON employee
+     FOR EACH ROW BEGIN -- for each of the new items being inserted
+     INSERT INTO trigger_test VALUES('added a new employee'); -- we want to insert into the trigger test table
+END$$
+DELIMITER ; -- changes delimiter back to ;
+
+-- TEST TRIGGER
+INSERT INTO employee VALUES (109,'Owen','Gittins','2000-09-21','M',69000,106,3);
+
+SELECT * FROM trigger_test; -- SUCCESS!!! :D
+
+-- Another trigger
+DELIMITER $$ -- changes the delimiter ; to $$ so the trigger works correctly
+CREATE
+     TRIGGER my_trigger2 BEFORE INSERT 
+     ON employee
+     FOR EACH ROW BEGIN 
+     INSERT INTO trigger_test VALUES(NEW.first_name); -- New refers to new row being inserted. Will essentially insert first name of new employee into trigger table
+END$$
+DELIMITER ;
+
+-- TEST TRIGGER
+INSERT INTO employee VALUES (110,'Molly','Flanagan','2001-04-28','M',69000,106,3);
+
+SELECT * FROM trigger_test; -- SUCCESS AGAIN!!! :D
+
+-- More complex trigger USING CONDITIONALS
+DELIMITER $$ 
+CREATE
+     TRIGGER my_trigger3 BEFORE INSERT 
+     ON employee
+     FOR EACH ROW BEGIN 
+     IF NEW.sex = 'M' THEN
+           INSERT INTO trigger_test VALUES('added male employee'); 
+    ELSEIF NEW.sex = 'F' THEN
+            INSERT INTO trigger_test VALUES('added female employee');
+    ELSE
+            INSERT INTO trigger_test VALUES('added another emplpyee');
+    END IF;
+END$$
+DELIMITER ;
+
+-- TEST TRIGGER
+INSERT INTO employee VALUES (111,'Henry','Flanagan','2022-01-05','M',69,106,3);

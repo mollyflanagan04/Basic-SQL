@@ -1,0 +1,98 @@
+--INT -- Whole Numberrs
+--DECIMAL(10,4) --Decimal Numbers (M is total number of digits you want to store. N is the number of digits you want to store after decimal point)
+--VARCHAR(100) -- String of text of length 1
+--BLOB -- Binary Large Object, Stores large data
+--DATE -- 'YYYY-MM-DD'
+--TIMESTAMP -- 'YYYY-MM-DD HH:MM:SS'
+
+
+------------------------------------------------------------------------------
+-- Data Definition Language (DDL)
+
+-- CREATE EXAMPLE 1
+CREATE TABLE student (
+    student_id INT AUTO_INCREMENT,
+    name VARCHAR(20),
+    major VARCHAR(20),
+    PRIMARY KEY(student_id)
+);
+
+-- CREATE EXAMPLE 2
+CREATE TABLE student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    major VARCHAR(20) DEFAULT 'undecided' 
+);
+
+DESCRIBE student;
+  
+DROP TABLE student; -- deletes entire table
+
+ALTER TABLE student ADD gpa DECIMAL(3,2); -- add a column. 3 total digits with 2 of them occuring after decimal point
+
+ALTER TABLE student DROP COLUMN gpa; -- remove column from table
+
+
+------------------------------------------------------------------------------
+-- Data Manipulation Language (DML)
+
+SELECT * FROM student;
+
+INSERT INTO student VALUES(1,'Jack','Biology');
+INSERT INTO student VALUES(2,'Kate','Sociology');
+INSERT INTO student VALUES(3,'Claire','Chemistry');
+INSERT INTO student VALUES(4,'Jack','Biology');
+INSERT INTO student VALUES(5,'Mike','Computer Science');
+
+UPDATE student
+SET major = 'Bio'
+WHERE major = 'Biology';
+
+UPDATE student
+SET major = 'Comp Sci'
+WHERE major = 'Computer Science';
+
+UPDATE student
+SET major = 'Biochemistry'
+WHERE major = 'Bio' OR major = 'Chemistry';
+
+UPDATE student
+SET name = 'Tom',
+major = 'undeicided'
+WHERE student_id = '1';
+
+DELETE FROM student
+WHERE student_id = 5;
+
+------------------------------------------------------------------------------
+-- Data Query Language (DQL)
+
+SELECT * 
+FROM student
+ORDER BY major,student_id;
+
+SELECT * 
+FROM student                                   
+LIMIT 2;
+
+SELECT * 
+FROM student
+ORDER BY student_id DESC
+LIMIT 2;
+
+SELECT * 
+FROM student
+WHERE major = 'Biology';
+-----
+
+-- COMPARISON OPERATORS
+-- <,>,<=,>=,=,!=/<>,AND,OR
+
+SELECT * 
+FROM student
+WHERE student_id <= 3 AND name != 'Jack';
+
+SELECT * 
+FROM student
+WHERE student_id = 2 OR major = 'Biology';
+-----
